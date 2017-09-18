@@ -10,6 +10,8 @@ import android.support.annotation.DrawableRes;
 import android.util.Log;
 import android.view.View;
 
+import com.asha.vrlib.MD360Director;
+import com.asha.vrlib.MD360DirectorFactory;
 import com.asha.vrlib.MDVRLibrary;
 import com.asha.vrlib.model.MDRay;
 import com.asha.vrlib.plugins.hotspot.IMDHotspot;
@@ -106,9 +108,22 @@ public class BitmapPlayerActivity extends MD360PlayerActivity {
                     }
                 })
                 .pinchEnabled(true)
+//                .directorFactory(new DirectorFactory())//左右眼不一样
                 .projectionFactory(new CustomProjectionFactory())
                 .build(findViewById(R.id.gl_view));
     }
+
+    private static class DirectorFactory extends MD360DirectorFactory {
+        @Override
+        public MD360Director createDirector(int index) {
+            switch (index){
+                // setAngle: angle to rotate in degrees
+                case 1:   return MD360Director.builder().setRoll(-180.0f).setEyeX(-2.0f).setLookX(-2.0f).build();
+                default:  return MD360Director.builder().build();
+            }
+        }
+    }
+
 
     private Uri getDrawableUri(@DrawableRes int resId){
         Resources resources = getResources();

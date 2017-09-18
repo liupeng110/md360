@@ -71,34 +71,34 @@ public abstract class MD360PlayerActivity extends Activity {
         sDisplayMode.put(MDVRLibrary.DISPLAY_MODE_NORMAL,"NORMAL");
         sDisplayMode.put(MDVRLibrary.DISPLAY_MODE_GLASS,"GLASS");
 
-        sInteractiveMode.put(MDVRLibrary.INTERACTIVE_MODE_MOTION,"MOTION");
-        sInteractiveMode.put(MDVRLibrary.INTERACTIVE_MODE_TOUCH,"TOUCH");
-        sInteractiveMode.put(MDVRLibrary.INTERACTIVE_MODE_MOTION_WITH_TOUCH,"M & T");
-        sInteractiveMode.put(MDVRLibrary.INTERACTIVE_MODE_CARDBORAD_MOTION,"CARDBOARD M");
+//        sInteractiveMode.put(MDVRLibrary.INTERACTIVE_MODE_MOTION,"MOTION");
+//        sInteractiveMode.put(MDVRLibrary.INTERACTIVE_MODE_TOUCH,"TOUCH");
+//        sInteractiveMode.put(MDVRLibrary.INTERACTIVE_MODE_MOTION_WITH_TOUCH,"M & T");
+//        sInteractiveMode.put(MDVRLibrary.INTERACTIVE_MODE_CARDBORAD_MOTION,"CARDBOARD M");
         sInteractiveMode.put(MDVRLibrary.INTERACTIVE_MODE_CARDBORAD_MOTION_WITH_TOUCH,"CARDBOARD M&T");
 
-        sProjectionMode.put(MDVRLibrary.PROJECTION_MODE_SPHERE,"SPHERE");
-        sProjectionMode.put(MDVRLibrary.PROJECTION_MODE_DOME180,"DOME 180");
-        sProjectionMode.put(MDVRLibrary.PROJECTION_MODE_DOME230,"DOME 230");
-        sProjectionMode.put(MDVRLibrary.PROJECTION_MODE_DOME180_UPPER,"DOME 180 UPPER");
-        sProjectionMode.put(MDVRLibrary.PROJECTION_MODE_DOME230_UPPER,"DOME 230 UPPER");
-        sProjectionMode.put(MDVRLibrary.PROJECTION_MODE_STEREO_SPHERE_HORIZONTAL,"STEREO H SPHERE");
-        sProjectionMode.put(MDVRLibrary.PROJECTION_MODE_STEREO_SPHERE_VERTICAL,"STEREO V SPHERE");
-        sProjectionMode.put(MDVRLibrary.PROJECTION_MODE_PLANE_FIT,"PLANE FIT");
-        sProjectionMode.put(MDVRLibrary.PROJECTION_MODE_PLANE_CROP,"PLANE CROP");
-        sProjectionMode.put(MDVRLibrary.PROJECTION_MODE_PLANE_FULL,"PLANE FULL");
-        sProjectionMode.put(MDVRLibrary.PROJECTION_MODE_MULTI_FISH_EYE_HORIZONTAL,"MULTI FISH EYE HORIZONTAL");
-        sProjectionMode.put(MDVRLibrary.PROJECTION_MODE_MULTI_FISH_EYE_VERTICAL,"MULTI FISH EYE VERTICAL");
-        sProjectionMode.put(CustomProjectionFactory.CUSTOM_PROJECTION_FISH_EYE_RADIUS_VERTICAL,"CUSTOM MULTI FISH EYE");
+//        sProjectionMode.put(MDVRLibrary.PROJECTION_MODE_SPHERE,"SPHERE");
+//        sProjectionMode.put(MDVRLibrary.PROJECTION_MODE_DOME180,"DOME 180");
+//        sProjectionMode.put(MDVRLibrary.PROJECTION_MODE_DOME230,"DOME 230");
+//        sProjectionMode.put(MDVRLibrary.PROJECTION_MODE_DOME180_UPPER,"DOME 180 UPPER");
+//        sProjectionMode.put(MDVRLibrary.PROJECTION_MODE_DOME230_UPPER,"DOME 230 UPPER");
+//        sProjectionMode.put(MDVRLibrary.PROJECTION_MODE_STEREO_SPHERE_HORIZONTAL,"STEREO H SPHERE");
+//        sProjectionMode.put(MDVRLibrary.PROJECTION_MODE_STEREO_SPHERE_VERTICAL,"STEREO V SPHERE");
+//        sProjectionMode.put(MDVRLibrary.PROJECTION_MODE_PLANE_FIT,"PLANE FIT");
+//        sProjectionMode.put(MDVRLibrary.PROJECTION_MODE_PLANE_CROP,"PLANE CROP");
+//        sProjectionMode.put(MDVRLibrary.PROJECTION_MODE_PLANE_FULL,"PLANE FULL");
+//        sProjectionMode.put(MDVRLibrary.PROJECTION_MODE_MULTI_FISH_EYE_HORIZONTAL,"MULTI FISH EYE HORIZONTAL");
+//        sProjectionMode.put(MDVRLibrary.PROJECTION_MODE_MULTI_FISH_EYE_VERTICAL,"MULTI FISH EYE VERTICAL");
+//        sProjectionMode.put(CustomProjectionFactory.CUSTOM_PROJECTION_FISH_EYE_RADIUS_VERTICAL,"CUSTOM MULTI FISH EYE");
 
-        sAntiDistortion.put(1,"ANTI-ENABLE");
-        sAntiDistortion.put(0,"ANTI-DISABLE");
-
-        sPitchFilter.put(1,"FILTER PITCH");
-        sPitchFilter.put(0,"FILTER NOP");
-
-        sFlingEnabled.put(1, "FLING ENABLED");
-        sFlingEnabled.put(0, "FLING DISABLED");
+//        sAntiDistortion.put(1,"ANTI-ENABLE");
+//        sAntiDistortion.put(0,"ANTI-DISABLE");
+//
+//        sPitchFilter.put(1,"FILTER PITCH");
+//        sPitchFilter.put(0,"FILTER NOP");
+//
+//        sFlingEnabled.put(1, "FLING ENABLED");
+//        sFlingEnabled.put(0, "FLING DISABLED");
     }
 
     public static void startVideo(Context context, Uri uri){
@@ -327,8 +327,8 @@ public abstract class MD360PlayerActivity extends Activity {
 
                 MDViewBuilder builder = MDViewBuilder.create()
                         .provider(view, 720/*view width*/, 1280/*view height*/)
-                        .size(8,12)
-                        .position(MDPosition.newInstance().setZ(-10.0f))
+                        .size(2,4)
+                        .position(MDPosition.newInstance().setZ(-5.0f))
                         .title("md view")
                         .tag("tag-md-text-view")
                         ;
@@ -336,9 +336,6 @@ public abstract class MD360PlayerActivity extends Activity {
                 MDAbsView mdView = new MDView(builder);
                 plugins.add(mdView);
                 getVRLibrary().addPlugin(mdView);
-
-
-
 
 //                TextView textView = new TextView(activity);
 //                textView.setBackgroundColor(0x55FFCC11);
@@ -361,26 +358,29 @@ public abstract class MD360PlayerActivity extends Activity {
         findViewById(R.id.button_update_md_view).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MDAbsView mdView = getVRLibrary().findViewByTag("tag-md-text-view");
-                if (mdView != null){
-                    TextView textView = mdView.castAttachedView(TextView.class);
-                    textView.setText("Cheer up!");
-                    textView.setBackgroundColor(0x8800FF00);
-                    mdView.invalidate();
-                }
+
+                try {
+                    MDAbsView mdView = getVRLibrary().findViewByTag("tag-md-text-view");
+                    if (mdView != null) {
+                        TextView textView = mdView.castAttachedView(TextView.class);
+                        textView.setText("Cheer up!");
+                        textView.setBackgroundColor(0x8800FF00);
+                        mdView.invalidate();
+                    }
+                }catch (Throwable t){t.printStackTrace();}
             }
         });
 
         findViewById(R.id.button_md_view_hover).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                View view = new HoverView(activity);
+                View view = new HoverView(activity);//view 层自带进度值 外部调用
                 view.setBackgroundColor(0x55FFCC11);
 
                 MDViewBuilder builder = MDViewBuilder.create()
                         .provider(view, 300/*view width*/, 200/*view height*/)
-                        .size(3, 2)
-                        .position(MDPosition.newInstance().setZ(-8.0f))
+                        .size(4, 0.25f)
+                        .position(MDPosition.newInstance().setZ(-3.0f))
                         .title("md view")
                         .tag("tag-md-text-view")
                         ;
@@ -404,7 +404,6 @@ public abstract class MD360PlayerActivity extends Activity {
 
                 String brief = getVRLibrary().getDirectorBrief().toString();
                 directorBriefText.setText(brief);
-
                 if (System.currentTimeMillis() - hitTimestamp > 5000){
                     getVRLibrary().resetEyePick();
                 }
@@ -474,6 +473,15 @@ public abstract class MD360PlayerActivity extends Activity {
                 })
                 .init(R.id.spinner_fling_enable);
     }
+
+
+
+    private void myprogress(String tag){//处理播放进度
+
+
+
+    }
+
 
 
     private ValueAnimator animator;

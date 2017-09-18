@@ -1,6 +1,7 @@
 package com.asha.md360player4android;
 
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
@@ -75,7 +76,9 @@ public class DemoActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String url = et.getText().toString();
                 if (!TextUtils.isEmpty(url)){
-                    MD360PlayerActivity.startVideo(DemoActivity.this, Uri.parse(url));
+                    Intent intent = new Intent(DemoActivity.this,VideoPlayerActivity.class);
+                    startActivity(intent);
+//                    MD360PlayerActivity.startVideo(DemoActivity.this, Uri.parse(url));
                 } else {
                     Toast.makeText(DemoActivity.this, "empty url!", Toast.LENGTH_SHORT).show();
                 }
