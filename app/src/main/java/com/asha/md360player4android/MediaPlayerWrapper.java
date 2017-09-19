@@ -7,6 +7,7 @@ import android.view.Surface;
 import java.io.IOException;
 import java.io.InputStream;
 
+import tv.danmaku.ijk.media.player.AndroidMediaPlayer;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 import tv.danmaku.ijk.media.player.misc.IMediaDataSource;
@@ -32,6 +33,7 @@ public class MediaPlayerWrapper implements IMediaPlayer.OnPreparedListener {
     public void init(){
         mStatus = STATUS_IDLE;
         mPlayer = new IjkMediaPlayer();
+//        mPlayer = new AndroidMediaPlayer();
         mPlayer.setOnPreparedListener(this);
         mPlayer.setOnInfoListener(new IMediaPlayer.OnInfoListener() {
             @Override

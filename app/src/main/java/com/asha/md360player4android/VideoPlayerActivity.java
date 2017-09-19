@@ -2,6 +2,8 @@ package com.asha.md360player4android;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.Surface;
 import android.view.View;
 import android.widget.Toast;
@@ -380,8 +382,8 @@ public  class VideoPlayerActivity extends Activity {
                         .provider(view, 300/*view width*/, 200/*view height*/)
                         .size(16, 1f)
                         .position(MDPosition.newInstance().setZ(-16.0f))
-                        .title("md view")
-                        .tag("tag-md-text-view")
+                        .title("hover")
+                        .tag("hover")
                         ;
 
                 MDAbsView mdView = new MDView(builder);
@@ -400,10 +402,10 @@ public  class VideoPlayerActivity extends Activity {
                 long hitTimestamp = hitEvent.getTimestamp();
                 String text = hotspot == null ? "nop" : String.format(Locale.CHINESE, "%s  %fs", hotspot.getTitle(), (System.currentTimeMillis() - hitTimestamp) / 1000.0f );
                 hotspotText.setText(text);
-
+                myprogress(text,System.currentTimeMillis() - hitTimestamp);
                 String brief = getVRLibrary().getDirectorBrief().toString();
                 directorBriefText.setText(brief);
-                if (System.currentTimeMillis() - hitTimestamp > 5000){
+                if (System.currentTimeMillis() - hitTimestamp > 1000*60*60){//5秒钟
                     getVRLibrary().resetEyePick();
                 }
             }
@@ -503,8 +505,10 @@ public  class VideoPlayerActivity extends Activity {
 
 //        Uri uri = getUri();
 //        if (uri != null){
-//            mMediaPlayerWrapper.openRemoteFile(uri.toString());
-            mMediaPlayerWrapper.openRemoteFile("http://cache.utovr.com/201508270528174780.m3u8");
+//        Uri uri = Uri.parse("file://"+Environment.getExternalStorageDirectory()+"/b.mp4");
+//          try{mMediaPlayerWrapper.getPlayer().setDataSource(this,uri);}catch (Throwable t){t.printStackTrace();}
+            mMediaPlayerWrapper.openRemoteFile(Environment.getExternalStorageDirectory()+"/b.mp4");
+//            mMediaPlayerWrapper.openRemoteFile("http://cache.utovr.com/201508270528174780.m3u8");
             mMediaPlayerWrapper.prepare();
 //        }
 
@@ -522,11 +526,30 @@ public  class VideoPlayerActivity extends Activity {
 
     }
 
+   static  long time =0;
 
-
-    private void myprogress(String tag){//处理播放进度
-
-
+    private void myprogress(String tag,long times){//处理播放进度  nop 为标志
+        Log.i("myvr","myvr 时间："+times);
+        MDAbsView mdView;
+        HoverView hoverView;
+        time=times;
+        if (!tag.startsWith("nop")) {
+           try {
+               mdView = getVRLibrary().findViewByTag("hover");
+               hoverView = mdView.castAttachedView(HoverView.class);
+           }catch (Throwable t){t.printStackTrace();return;}
+            if (time>1000*3){
+                hoverView.setFoucus(true);
+                mdView.invalidate();
+            }
+        }else {
+            try {
+                mdView = getVRLibrary().findViewByTag("hover");
+                hoverView = mdView.castAttachedView(HoverView.class);
+            }catch (Throwable t){t.printStackTrace();return;}
+                hoverView.setFoucus(false);
+                mdView.invalidate();
+        }
 
     }
 
