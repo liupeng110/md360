@@ -82,10 +82,10 @@ public  class VideoPlayerActivity extends Activity {
         sDisplayMode.put(MDVRLibrary.DISPLAY_MODE_NORMAL,"NORMAL");
         sDisplayMode.put(MDVRLibrary.DISPLAY_MODE_GLASS,"GLASS");
 
-//        sInteractiveMode.put(MDVRLibrary.INTERACTIVE_MODE_MOTION,"MOTION");
-//        sInteractiveMode.put(MDVRLibrary.INTERACTIVE_MODE_TOUCH,"TOUCH");
-//        sInteractiveMode.put(MDVRLibrary.INTERACTIVE_MODE_MOTION_WITH_TOUCH,"M & T");
-//        sInteractiveMode.put(MDVRLibrary.INTERACTIVE_MODE_CARDBORAD_MOTION,"CARDBOARD M");
+        sInteractiveMode.put(MDVRLibrary.INTERACTIVE_MODE_MOTION,"MOTION");
+        sInteractiveMode.put(MDVRLibrary.INTERACTIVE_MODE_TOUCH,"TOUCH");
+        sInteractiveMode.put(MDVRLibrary.INTERACTIVE_MODE_MOTION_WITH_TOUCH,"M & T");
+        sInteractiveMode.put(MDVRLibrary.INTERACTIVE_MODE_CARDBORAD_MOTION,"CARDBOARD M");
         sInteractiveMode.put(MDVRLibrary.INTERACTIVE_MODE_CARDBORAD_MOTION_WITH_TOUCH,"CARDBOARD M&T");
 
         sProjectionMode.put(MDVRLibrary.PROJECTION_MODE_SPHERE,"SPHERE");
@@ -375,21 +375,7 @@ public  class VideoPlayerActivity extends Activity {
         findViewById(R.id.button_md_view_hover).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                View view = new HoverView(activity);//view 层自带进度值 外部调用
-                view.setBackgroundColor(0x55FFCC11);
-
-                MDViewBuilder builder = MDViewBuilder.create()
-                        .provider(view, 300/*view width*/, 200/*view height*/)
-                        .size(16, 1f)
-                        .position(MDPosition.newInstance().setZ(-16.0f))
-                        .title("hover")
-                        .tag("hover")
-                        ;
-
-                MDAbsView mdView = new MDView(builder);
-                mdView.rotateToCamera();
-                plugins.add(mdView);
-                getVRLibrary().addPlugin(mdView);
+               addControl();
             }
         });
 
@@ -526,8 +512,36 @@ public  class VideoPlayerActivity extends Activity {
 
     }
 
-   static  long time =0;
 
+    private void addControl(){
+
+        //进度条
+        MDPosition pos_progress=MDPosition.newInstance().setAngleX(6f).setY(-6f).setZ(-23.0f);//.setYaw(15.0f);
+//            MDPosition.newInstance().setZ(-3.0f).setYaw(0.0f).setAngleX(90);
+        View view = new HoverView(VideoPlayerActivity.this);//view 层自带进度值 外部调用
+        view.setBackgroundColor(0x55FFCC11);
+
+        MDViewBuilder builder = MDViewBuilder.create()
+                .provider(view, 300/*view width*/, 200/*view height*/)
+                .size(12f, 1f)
+                .position(pos_progress)
+                .title("hover")
+                .tag("hover");
+
+        MDAbsView mdView = new MDView(builder);
+        mdView.rotateToCamera();
+        plugins.add(mdView);
+        getVRLibrary().addPlugin(mdView);
+
+
+
+
+
+    }
+
+
+
+     static  long time =0;
     private void myprogress(String tag,long times){//处理播放进度  nop 为标志
         Log.i("myvr","myvr 时间："+times);
         MDAbsView mdView;
