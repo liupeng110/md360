@@ -18,22 +18,62 @@
           android:orientation="horizontal"
           android:layout_width="match_parent"
           android:layout_height="match_parent">
-         <TextView
-             android:id="@+id/hotspot_point1"
-             android:text="+"
-             android:textColor="@android:color/white"
-             android:gravity="center"
+
+         <FrameLayout
+             android:layout_width="0dp"
+             android:layout_height="match_parent"
+             android:layout_weight="1">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/hotspot_point1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginBottom="2dp"
+                android:text="."
+                android:textColor="@android:color/white" />
+         </FrameLayout>
+
+
+         <FrameLayout
              android:layout_weight="1"
              android:layout_width="0dp"
-             android:layout_height="match_parent" />
-         <TextView
-             android:id="@+id/hotspot_point2"
-             android:text="+"
-             android:textColor="@android:color/white"
-             android:gravity="center"
-             android:layout_weight="1"
-             android:layout_width="0dp"
-             android:layout_height="match_parent" />
+             android:layout_height="match_parent" >
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/hotspot_point2"
+                android:text="."
+                android:textColor="@android:color/white"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginBottom="2dp"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+       </FrameLayout>
+
+
       </LinearLayout>
    </FrameLayout>
 
@@ -44,7 +84,8 @@
       <LinearLayout
           android:orientation="horizontal"
           android:layout_width="match_parent"
-          android:layout_height="wrap_content">
+          android:layout_height="wrap_content"
+          >
          <android.support.v7.widget.AppCompatSpinner
              android:paddingLeft="0dp"
              android:paddingRight="0dp"
@@ -318,6 +359,7 @@
        android:layout_centerInParent="true"
        android:id="@+id/progress"
        android:layout_width="wrap_content"
-       android:layout_height="wrap_content" />
+       android:layout_height="wrap_content"
+       />
 
 </RelativeLayout>

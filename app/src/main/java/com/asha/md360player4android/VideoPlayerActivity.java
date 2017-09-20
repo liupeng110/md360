@@ -58,6 +58,7 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -79,13 +80,13 @@ public  class VideoPlayerActivity extends Activity {
     private static final SparseArray<String> sFlingEnabled = new SparseArray<>();
 
     static {
-        sDisplayMode.put(MDVRLibrary.DISPLAY_MODE_NORMAL,"NORMAL");
+//        sDisplayMode.put(MDVRLibrary.DISPLAY_MODE_NORMAL,"NORMAL");
         sDisplayMode.put(MDVRLibrary.DISPLAY_MODE_GLASS,"GLASS");
 
-        sInteractiveMode.put(MDVRLibrary.INTERACTIVE_MODE_MOTION,"MOTION");
-        sInteractiveMode.put(MDVRLibrary.INTERACTIVE_MODE_TOUCH,"TOUCH");
-        sInteractiveMode.put(MDVRLibrary.INTERACTIVE_MODE_MOTION_WITH_TOUCH,"M & T");
-        sInteractiveMode.put(MDVRLibrary.INTERACTIVE_MODE_CARDBORAD_MOTION,"CARDBOARD M");
+//        sInteractiveMode.put(MDVRLibrary.INTERACTIVE_MODE_MOTION,"MOTION");
+//        sInteractiveMode.put(MDVRLibrary.INTERACTIVE_MODE_TOUCH,"TOUCH");
+//        sInteractiveMode.put(MDVRLibrary.INTERACTIVE_MODE_MOTION_WITH_TOUCH,"M & T");
+//        sInteractiveMode.put(MDVRLibrary.INTERACTIVE_MODE_CARDBORAD_MOTION,"CARDBOARD M");
         sInteractiveMode.put(MDVRLibrary.INTERACTIVE_MODE_CARDBORAD_MOTION_WITH_TOUCH,"CARDBOARD M&T");
 
         sProjectionMode.put(MDVRLibrary.PROJECTION_MODE_SPHERE,"SPHERE");
@@ -493,9 +494,78 @@ public  class VideoPlayerActivity extends Activity {
 //        if (uri != null){
 //        Uri uri = Uri.parse("file://"+Environment.getExternalStorageDirectory()+"/b.mp4");
 //          try{mMediaPlayerWrapper.getPlayer().setDataSource(this,uri);}catch (Throwable t){t.printStackTrace();}
-            mMediaPlayerWrapper.openRemoteFile(Environment.getExternalStorageDirectory()+"/b.mp4");
+            mMediaPlayerWrapper.openRemoteFile(Environment.getExternalStorageDirectory()+"/a.mp4");
 //            mMediaPlayerWrapper.openRemoteFile("http://cache.utovr.com/201508270528174780.m3u8");
+//        mMediaPlayerWrapper.openRemoteFile("http://v1qn.hnjk.net/e9_256.mp4");
+
             mMediaPlayerWrapper.prepare();
+
+        mMediaPlayerWrapper.getPlayer().setScreenOnWhilePlaying(true);
+        mMediaPlayerWrapper.getPlayer().setOnCompletionListener(new IMediaPlayer.OnCompletionListener() {
+            @Override public void onCompletion(IMediaPlayer iMediaPlayer) {
+                SimpleDateFormat formatter = new SimpleDateFormat("mm:ss");
+                try {
+                    MDAbsView mdView = getVRLibrary().findViewByTag("txt_left");
+                    if (mdView != null) {
+                        TextView textView = mdView.castAttachedView(TextView.class);
+                        textView.setText(formatter.format(mMediaPlayerWrapper.getPlayer().getCurrentPosition()));
+                        mdView.invalidate();
+                    }
+                }catch (Throwable t){t.printStackTrace();}
+                try {
+//                    Log.i("myvr","per百分比no_index:"+mMediaPlayerWrapper.getPlayer().getCurrentPosition());
+//                    Log.i("myvr","per百分比no_total:"+mMediaPlayerWrapper.getPlayer().getDuration());
+                    double index=(double)mMediaPlayerWrapper.getPlayer().getCurrentPosition();
+                    double total=(double)mMediaPlayerWrapper.getPlayer().getDuration();
+//                    Log.i("myvr","per百分比index:"+index);
+//                    Log.i("myvr","per百分比total:"+total);
+//                    Log.i("myvr","per百分比总计:"+  (index/total));
+
+                    ((HoverView) view).setSeek((index/total));
+                }catch (Throwable t){t.printStackTrace();}
+            }
+        });
+
+        mMediaPlayerWrapper.getPlayer().setOnBufferingUpdateListener(new IMediaPlayer.OnBufferingUpdateListener() {
+            @Override public void onBufferingUpdate(IMediaPlayer iMediaPlayer, int i) {
+
+                SimpleDateFormat formatter = new SimpleDateFormat("mm:ss");
+                try {
+                    MDAbsView mdView = getVRLibrary().findViewByTag("txt_left");
+                    if (mdView != null) {
+                        TextView textView = mdView.castAttachedView(TextView.class);
+                        textView.setText(formatter.format(mMediaPlayerWrapper.getPlayer().getCurrentPosition()));
+                        mdView.invalidate();
+                    }
+                }catch (Throwable t){t.printStackTrace();}
+                try {
+//                    Log.i("myvr","per百分比no_index:"+mMediaPlayerWrapper.getPlayer().getCurrentPosition());
+//                    Log.i("myvr","per百分比no_total:"+mMediaPlayerWrapper.getPlayer().getDuration());
+                    double index=(double)mMediaPlayerWrapper.getPlayer().getCurrentPosition();
+                    double total=(double)mMediaPlayerWrapper.getPlayer().getDuration();
+//                    Log.i("myvr","per百分比index:"+index);
+//                    Log.i("myvr","per百分比total:"+total);
+//                    Log.i("myvr","per百分比总计:"+  (index/total));
+
+                    ((HoverView) view).setSeek((index/total));
+                }catch (Throwable t){t.printStackTrace();}
+            }
+        });
+
+        mMediaPlayerWrapper.getPlayer().setOnSeekCompleteListener(new IMediaPlayer.OnSeekCompleteListener() {
+            @Override public void onSeekComplete(IMediaPlayer iMediaPlayer) {
+                Log.i("myvr","Seek完成:"+iMediaPlayer);
+
+
+
+            }
+        });
+
+
+
+
+
+
 //        }
 
         findViewById(R.id.control_next).setOnClickListener(new View.OnClickListener() {
@@ -512,30 +582,83 @@ public  class VideoPlayerActivity extends Activity {
 
     }
 
-
+    View view;
     private void addControl(){
+       //背景
+        MDPosition pos_back=MDPosition.newInstance().setAngleX(4f).setY(-1.5f).setZ(-9.0f);//.setYaw(15.0f);
+        MDHotspotBuilder builder_back = MDHotspotBuilder.create(mImageLoadProvider)
+                .size(7f,2f)
+                .provider(this, R.mipmap.heia)
+                .title("pos_back")
+                .position(pos_back);
+        MDAbsHotspot hotspot_back = new MDSimpleHotspot(builder_back);
+        plugins.add(hotspot_back);
+        getVRLibrary().addPlugin(hotspot_back);
+
+        //两个时间
+        MDPosition pos_txt_left=MDPosition.newInstance().setX(-3.3f).setY(-0.5f).setZ(-15.0f);//.setYaw(15.0f);
+        MDPosition pos_txt_right=MDPosition.newInstance().setX(6f).setY(-0.5f).setZ(-15.0f);//.setYaw(15.0f);
+        TextView txt_left = new TextView(this);
+                 txt_left.setTextColor(0xffffffff);
+                 txt_left.setText("00:00");
+
+                MDViewBuilder builder_txt_left = MDViewBuilder.create()
+                        .provider(txt_left, 400/*view width*/, 100/*view height*/)
+                        .size(4, 1)
+                        .position(pos_txt_left)
+                        .title("txt_left")
+                        .tag("txt_left") ;
+
+                MDAbsView mdView_txt_left = new MDView(builder_txt_left);
+                plugins.add(mdView_txt_left);
+                getVRLibrary().addPlugin(mdView_txt_left);
+
+        TextView txt_right = new TextView(this);
+                 txt_right.setTextColor(0xffffffff);
+                 txt_right.setText("05:25");
+
+        MDViewBuilder builder_txt_right = MDViewBuilder.create()
+                .provider(txt_right, 400/*view width*/, 100/*view height*/)
+                .size(4, 1)
+                .position(pos_txt_right)
+                .title("txt_right")
+                .tag("txt_right") ;
+        MDAbsView mdView_txt_right= new MDView(builder_txt_right);
+        plugins.add(mdView_txt_right);
+        getVRLibrary().addPlugin(mdView_txt_right);
+
+
+
 
         //进度条
-        MDPosition pos_progress=MDPosition.newInstance().setAngleX(6f).setY(-6f).setZ(-23.0f);//.setYaw(15.0f);
-//            MDPosition.newInstance().setZ(-3.0f).setYaw(0.0f).setAngleX(90);
-        View view = new HoverView(VideoPlayerActivity.this);//view 层自带进度值 外部调用
-        view.setBackgroundColor(0x55FFCC11);
+        MDPosition pos_progress=MDPosition.newInstance().setAngleX(6f).setY(-2.8f).setZ(-23.0f);//.setYaw(15.0f);
+          view = new HoverView(VideoPlayerActivity.this);//view 层自带进度值 外部调用
+        view.setBackgroundColor(0x9083CC39);
 
         MDViewBuilder builder = MDViewBuilder.create()
                 .provider(view, 300/*view width*/, 200/*view height*/)
-                .size(12f, 1f)
+                .size(12f, 0.5f)
                 .position(pos_progress)
                 .title("hover")
                 .tag("hover");
 
         MDAbsView mdView = new MDView(builder);
-        mdView.rotateToCamera();
+//        mdView.rotateToCamera();
         plugins.add(mdView);
         getVRLibrary().addPlugin(mdView);
 
 
 
 
+        SimpleDateFormat formatter = new SimpleDateFormat("mm:ss");
+        try {
+            MDAbsView fi_txt_right = getVRLibrary().findViewByTag("txt_right");
+            if (fi_txt_right != null) {
+                TextView textView = fi_txt_right.castAttachedView(TextView.class);
+                textView.setText(formatter.format(mMediaPlayerWrapper.getPlayer().getDuration()));
+                fi_txt_right.invalidate();
+            }
+        }catch (Throwable t){t.printStackTrace();}
 
     }
 
@@ -543,7 +666,7 @@ public  class VideoPlayerActivity extends Activity {
 
      static  long time =0;
     private void myprogress(String tag,long times){//处理播放进度  nop 为标志
-        Log.i("myvr","myvr 时间："+times);
+//        Log.i("myvr","myvr 时间："+times);
         MDAbsView mdView;
         HoverView hoverView;
         time=times;
@@ -567,6 +690,9 @@ public  class VideoPlayerActivity extends Activity {
 
     }
 
+    private void vr_seek(int persent){
+        mMediaPlayerWrapper.getPlayer().seekTo(persent);
+    }
 
 
     private ValueAnimator animator;

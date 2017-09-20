@@ -54,8 +54,13 @@ public class HoverView extends View {
 
     private void initView() {
         paint = new Paint();
-        paint.setColor(0xFF0000FF);
+        paint.setColor(0xFF33b5e5);
 //        bmp_back = ImageLoader.getInstance().loadImageSync("assets://back.png");
+    }
+
+    public void setSeek(double seek){
+        x=(int) (300*seek);
+        Log.i("myvr","per百分比x:"+x);
     }
 
     @Override
@@ -90,15 +95,15 @@ public class HoverView extends View {
 
 
     @Override protected void onDraw(Canvas canvas) {
-        if (radius != 0){
+//        if (radius != 0){
 //            canvas.drawBitmap(bmp_back,0,0,paint);//
 //            canvas.drawCircle(x, y, radius, paint);
             canvas.drawRect(0,0,x,300,paint);
             Log.i("canvas","x:"+x+",y:"+y+",width:"+this.getWidth()+",height:"+getHeight());
             Log.i("canvas","进度值:"+(x/3)+" %");
-        }else{
-
-        }
+//        }else{
+//
+//        }
 
 
     }
