@@ -684,7 +684,7 @@ try {
 
 
         //快进播放等
-        MDPosition pos_p2=MDPosition.newInstance().setX(-1.3f).setY(-2.0f).setZ(-15.0f);//.setYaw(15.0f);
+        MDPosition pos_p2=MDPosition.newInstance().setX(-0.5f).setY(-2.0f).setZ(-15.0f);//.setYaw(15.0f);
         MDHotspotBuilder builder_p2 = MDHotspotBuilder.create(mImageLoadProvider)
                 .size(2f,2f)
                 .provider(0, this, R.mipmap.p2_k)
@@ -713,7 +713,7 @@ try {
 
 
         //快进播放等
-        MDPosition pos_p5=MDPosition.newInstance().setX(5.5f).setY(-2.0f).setZ(-15.0f);//.setYaw(15.0f);
+        MDPosition pos_p5=MDPosition.newInstance().setX(4.8f).setY(-2.0f).setZ(-15.0f);//.setYaw(15.0f);
         MDHotspotBuilder builder_p5 = MDHotspotBuilder.create(mImageLoadProvider)
                 .size(1.5f,1.5f)
                 .provider(0, this, R.mipmap.p5_k)
