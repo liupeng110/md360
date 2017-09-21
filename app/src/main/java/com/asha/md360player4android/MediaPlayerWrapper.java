@@ -20,7 +20,7 @@ import tv.danmaku.ijk.media.player.misc.IMediaDataSource;
  * status
  */
 public class MediaPlayerWrapper implements IMediaPlayer.OnPreparedListener {
-    protected IMediaPlayer mPlayer;
+    protected IjkMediaPlayer mPlayer;
     private IjkMediaPlayer.OnPreparedListener mPreparedListener;
     private static final int STATUS_IDLE = 0;
     private static final int STATUS_PREPARING = 1;
@@ -34,6 +34,7 @@ public class MediaPlayerWrapper implements IMediaPlayer.OnPreparedListener {
         mStatus = STATUS_IDLE;
         mPlayer = new IjkMediaPlayer();
 //        mPlayer = new AndroidMediaPlayer();
+//        mPlayer.setSpeed(1.8f);
         mPlayer.setOnPreparedListener(this);
         mPlayer.setOnInfoListener(new IMediaPlayer.OnInfoListener() {
             @Override
@@ -48,12 +49,13 @@ public class MediaPlayerWrapper implements IMediaPlayer.OnPreparedListener {
     private void enableHardwareDecoding(){
         if (mPlayer instanceof IjkMediaPlayer){
             IjkMediaPlayer player = (IjkMediaPlayer) mPlayer;
-            player.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "mediacodec", 1);
-            player.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "mediacodec-auto-rotate", 1);
+//            player.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "mediacodec", 1);
+//            player.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "mediacodec-auto-rotate", 1);
             player.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "overlay-format", IjkMediaPlayer.SDL_FCC_RV32);
             player.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "framedrop", 60);
             player.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "max-fps", 0);
             player.setOption(IjkMediaPlayer.OPT_CATEGORY_CODEC, "skip_loop_filter", 48);
+            player.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "soundtouch", 1);//倍速播放语调问题
         }
     }
 
@@ -106,6 +108,7 @@ public class MediaPlayerWrapper implements IMediaPlayer.OnPreparedListener {
             mPlayer.prepareAsync();
             mStatus = STATUS_PREPARING;
         }
+        mPlayer.setSpeed(1.75f);
     }
 
     public void stop(){

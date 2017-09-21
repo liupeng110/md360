@@ -19,7 +19,7 @@ import android.widget.Toast;
  */
 public class DemoActivity extends AppCompatActivity {
 
-    public static final String sPath = "file:///mnt/sdcard/vr/";
+    public static final String sPath = "file:///mnt/sdcard/";
 
     //public static final String sPath = "file:////storage/sdcard1/vr/";
 

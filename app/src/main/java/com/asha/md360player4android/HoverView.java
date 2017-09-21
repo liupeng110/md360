@@ -12,7 +12,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by hzqiujiadi on 2017/4/21.
@@ -80,6 +81,7 @@ public class HoverView extends View {
                         y = event.getY();
                         radius = (event.getEventTime() - event.getDownTime()) / 100 + 1;
                         times=times+1;//在这里可以发送实时进度到外部
+                        EventBus.getDefault().post("vr"+(x/300));
                     }
                 break;
 
